@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:full": "wrangler pages dev --d1=DB=our-itinerary-db --proxy 5173 -- vite",
+    "dev:full": "vite build && wrangler pages dev dist",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint .",

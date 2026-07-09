@@ -40,16 +40,12 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     }
   }
 
-  const user = await env.DB.prepare("SELECT username FROM users WHERE username = ? COLLATE NOCASE")
-    .bind(username)
-    .first<{ username: string }>();
-  if (!user) return badRequest("Unknown user — please register first.");
-
   const statements = [
-    env.DB.prepare("DELETE FROM votes WHERE user = ? COLLATE NOCASE").bind(user.username),
+    env.DB.prepare("INSERT OR IGNORE INTO users (username) VALUES (?)").bind(username),
+    env.DB.prepare("DELETE FROM votes WHERE user = ? COLLATE NOCASE").bind(username),
     ...clean.map((item) =>
       env.DB.prepare("INSERT INTO votes (user, item_id, item_name) VALUES (?, ?, ?)").bind(
-        user.username,
+        username,
         item.item_id,
         item.item_name,
       ),
