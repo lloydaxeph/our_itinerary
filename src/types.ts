@@ -26,14 +26,20 @@ export interface ImageResult {
   fallback?: string;
 }
 
-/** `${dayIndex}-${blockIndex}-${itemIndex}` */
+/** `${dayIndex}-${blockIndex}-${itemIndex}`, also used as the vote item_id */
 export type ActivityId = string;
 
-export interface SelectedRow {
-  date: string;
-  day: string;
-  city: City;
-  time: string;
-  name: string;
-  desc: string;
+export interface VoteItem {
+  item_id: string;
+  item_name: string;
+}
+
+export interface ResultRow extends VoteItem {
+  votes: number;
+}
+
+export interface AdminVoteRow extends VoteItem {
+  vote_id: number;
+  user: string;
+  created_at: string;
 }

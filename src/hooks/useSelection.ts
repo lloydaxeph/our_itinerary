@@ -15,5 +15,9 @@ export function useSelection() {
 
   const isSelected = useCallback((id: ActivityId) => selected.has(id), [selected]);
 
-  return { selected, toggle, isSelected, count: selected.size };
+  const setAll = useCallback((ids: ActivityId[]) => {
+    setSelected(new Set(ids));
+  }, []);
+
+  return { selected, toggle, isSelected, count: selected.size, setAll };
 }

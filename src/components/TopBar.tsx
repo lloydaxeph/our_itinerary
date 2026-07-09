@@ -1,9 +1,11 @@
 interface TopBarProps {
+  username: string;
   count: number;
-  onExport: () => void;
+  submitting: boolean;
+  onSubmit: () => void;
 }
 
-export function TopBar({ count, onExport }: TopBarProps) {
+export function TopBar({ username, count, submitting, onSubmit }: TopBarProps) {
   return (
     <div
       className="fixed inset-x-0 top-0 z-50 flex items-center justify-between pointer-events-none"
@@ -14,18 +16,17 @@ export function TopBar({ count, onExport }: TopBarProps) {
       }}
     >
       <div className="pointer-events-auto">
-        <div className="text-[11px] tracking-[.14em] uppercase text-ink-soft">
-          Vietnam · Nov 4–10
-        </div>
+        <div className="text-[11px] tracking-[.14em] uppercase text-ink-soft">{username}</div>
         <div className="text-[15px] font-bold font-serif">Hanoi &amp; Sapa</div>
       </div>
       <button
         type="button"
-        aria-label="Export selected places as CSV"
-        onClick={onExport}
-        className="focus-ring pointer-events-auto flex items-center gap-[7px] min-h-11 px-4 rounded-full bg-ink text-paper text-sm font-semibold tracking-wide shadow-card active:scale-[.97]"
+        aria-label="Submit selected places"
+        onClick={onSubmit}
+        disabled={submitting}
+        className="focus-ring pointer-events-auto flex items-center gap-[7px] min-h-11 px-4 rounded-full bg-ink text-paper text-sm font-semibold tracking-wide shadow-card active:scale-[.97] disabled:opacity-60"
       >
-        ⬇ Export
+        {submitting ? "Submitting…" : "Submit"}
         {count > 0 && (
           <span className="min-w-[22px] h-[22px] px-1.5 flex items-center justify-center bg-paper text-ink rounded-full text-xs font-extrabold">
             {count}

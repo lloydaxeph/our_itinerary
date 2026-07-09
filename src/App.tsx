@@ -1,53 +1,109 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Book } from "./components/Book";
+import { ConfirmDialog } from "./components/ConfirmDialog";
 import { Pager } from "./components/Pager";
+import { RegisterGate } from "./components/RegisterGate";
 import { Toast } from "./components/Toast";
 import { TopBar } from "./components/TopBar";
 import { DAYS } from "./data/days";
 import { useSelection } from "./hooks/useSelection";
 import { useToast } from "./hooks/useToast";
-import { downloadCsv } from "./lib/csv";
-import type { SelectedRow } from "./types";
+import { fetchMyVotes, submitVotes } from "./lib/api";
+import { getStoredUsername, setStoredUsername } from "./lib/session";
+import type { VoteItem } from "./types";
 
-// Flat, itinerary-ordered lookup so export doesn't depend on DOM order.
-const ROWS_BY_ID = new Map<string, SelectedRow>();
+// Flat, itinerary-ordered lookup of item_id -> item_name.
+const ITEM_NAMES = new Map<string, string>();
 DAYS.forEach((day, di) => {
   day.blocks.forEach((block, bi) => {
     block.items.forEach((item, ii) => {
-      ROWS_BY_ID.set(`${di}-${bi}-${ii}`, {
-        date: day.date,
-        day: `Day ${di + 1}`,
-        city: day.city,
-        time: block.time,
-        name: item.n,
-        desc: item.d,
-      });
+      ITEM_NAMES.set(`${di}-${bi}-${ii}`, item.n);
     });
   });
 });
-const ORDERED_IDS = [...ROWS_BY_ID.keys()];
 
 export default function App() {
-  const { selected, toggle, isSelected, count } = useSelection();
+  const { selected, toggle, isSelected, count, setAll } = useSelection();
   const { message, show } = useToast();
   const [current, setCurrent] = useState(0);
+  const [username, setUsername] = useState<string | null>(() => getStoredUsername());
+  const [submitting, setSubmitting] = useState(false);
+  const [hasSubmittedBefore, setHasSubmittedBefore] = useState(false);
+  const [confirmingResubmit, setConfirmingResubmit] = useState(false);
 
-  const handleExport = useCallback(() => {
+  useEffect(() => {
+    if (!username) return;
+    fetchMyVotes(username)
+      .then((res) => {
+        if (res.items.length > 0) {
+          setAll(res.items.map((i) => i.item_id));
+          setHasSubmittedBefore(true);
+        }
+      })
+      .catch(() => {
+        /* ignore — user just starts with a blank slate */
+      });
+  }, [username, setAll]);
+
+  const doSubmit = useCallback(async () => {
+    if (!username) return;
+    setSubmitting(true);
+    try {
+      const items: VoteItem[] = [...selected].map((id) => ({
+        item_id: id,
+        item_name: ITEM_NAMES.get(id) ?? id,
+      }));
+      const res = await submitVotes(username, items);
+      setHasSubmittedBefore(true);
+      show(`Submitted ${res.count} pick${res.count === 1 ? "" : "s"} ✓`);
+    } catch (err) {
+      show(err instanceof Error ? err.message : "Couldn't submit — try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }, [username, selected, show]);
+
+  const handleSubmit = useCallback(() => {
     if (selected.size === 0) {
       show("No places selected yet — tap a checkbox to add it to your plan.");
       return;
     }
-    const rows = ORDERED_IDS.filter((id) => selected.has(id)).map((id) => ROWS_BY_ID.get(id)!);
-    downloadCsv(rows, "hanoi-sapa-itinerary.csv");
-    show(`Exported ${selected.size} selected place${selected.size > 1 ? "s" : ""} ✓`);
-  }, [selected, show]);
+    if (hasSubmittedBefore) {
+      setConfirmingResubmit(true);
+      return;
+    }
+    doSubmit();
+  }, [selected, hasSubmittedBefore, show, doSubmit]);
+
+  if (!username) {
+    return (
+      <RegisterGate
+        onRegistered={(name) => {
+          setStoredUsername(name);
+          setUsername(name);
+        }}
+      />
+    );
+  }
 
   return (
     <>
-      <TopBar count={count} onExport={handleExport} />
+      <TopBar username={username} count={count} submitting={submitting} onSubmit={handleSubmit} />
       <Book days={DAYS} isSelected={isSelected} onToggle={toggle} onPageChange={setCurrent} />
       <Pager days={DAYS} current={current} />
       <Toast message={message} />
+      {confirmingResubmit && (
+        <ConfirmDialog
+          title="Replace your previous vote?"
+          message="You've already submitted picks. Submitting again will replace them with your current selection."
+          confirmLabel="Replace"
+          onCancel={() => setConfirmingResubmit(false)}
+          onConfirm={() => {
+            setConfirmingResubmit(false);
+            doSubmit();
+          }}
+        />
+      )}
     </>
   );
 }
