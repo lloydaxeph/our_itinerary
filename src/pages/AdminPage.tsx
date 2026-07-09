@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { Watermark } from "../components/Watermark";
 import { adminLogin, deleteAdminVote, fetchAdminVotes, updateAdminVote } from "../lib/api";
 import { clearAdminToken, getAdminToken, setAdminToken } from "../lib/session";
 import type { AdminVoteRow } from "../types";
@@ -48,6 +49,7 @@ function LoginForm({ onLoggedIn }: { onLoggedIn: (token: string) => void }) {
           {busy ? "Checking…" : "Log in"}
         </button>
       </form>
+      <Watermark />
     </div>
   );
 }
@@ -194,6 +196,7 @@ function VotesTable({ token, onUnauthorized }: { token: string; onUnauthorized: 
           </div>
         )}
       </div>
+      <Watermark />
     </div>
   );
 }

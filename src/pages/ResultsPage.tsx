@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Watermark } from "../components/Watermark";
 import { fetchResults } from "../lib/api";
 import type { ResultRow } from "../types";
 
@@ -54,6 +55,7 @@ export default function ResultsPage() {
           </div>
         )}
       </div>
+      <Watermark />
     </div>
   );
 }

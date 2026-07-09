@@ -17,22 +17,31 @@ export function TopBar({ username, count, submitting, onSubmit }: TopBarProps) {
     >
       <div className="pointer-events-auto">
         <div className="text-[11px] tracking-[.14em] uppercase text-ink-soft">{username}</div>
-        <div className="text-[15px] font-bold font-serif">Hanoi &amp; Sapa</div>
+        <div className="text-[15px] font-bold font-serif">Vietnam 2026</div>
       </div>
-      <button
-        type="button"
-        aria-label="Submit selected places"
-        onClick={onSubmit}
-        disabled={submitting}
-        className="focus-ring pointer-events-auto flex items-center gap-[7px] min-h-11 px-4 rounded-full bg-ink text-paper text-sm font-semibold tracking-wide shadow-card active:scale-[.97] disabled:opacity-60"
-      >
-        {submitting ? "Submitting…" : "Submit"}
-        {count > 0 && (
-          <span className="min-w-[22px] h-[22px] px-1.5 flex items-center justify-center bg-paper text-ink rounded-full text-xs font-extrabold">
-            {count}
-          </span>
-        )}
-      </button>
+      <div className="pointer-events-auto flex items-center gap-2">
+        <a
+          href="/results"
+          aria-label="View vote results"
+          className="focus-ring flex items-center min-h-11 px-3.5 rounded-full border border-line bg-paper/80 text-ink text-sm font-semibold tracking-wide active:scale-[.97]"
+        >
+          Results
+        </a>
+        <button
+          type="button"
+          aria-label="Submit selected places"
+          onClick={onSubmit}
+          disabled={submitting}
+          className="focus-ring flex items-center gap-[7px] min-h-11 px-4 rounded-full bg-ink text-paper text-sm font-semibold tracking-wide shadow-card active:scale-[.97] disabled:opacity-60"
+        >
+          {submitting ? "Submitting…" : "Submit"}
+          {count > 0 && (
+            <span className="min-w-[22px] h-[22px] px-1.5 flex items-center justify-center bg-paper text-ink rounded-full text-xs font-extrabold">
+              {count}
+            </span>
+          )}
+        </button>
+      </div>
     </div>
   );
 }

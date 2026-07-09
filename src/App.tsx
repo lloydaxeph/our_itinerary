@@ -5,6 +5,7 @@ import { Pager } from "./components/Pager";
 import { RegisterGate } from "./components/RegisterGate";
 import { Toast } from "./components/Toast";
 import { TopBar } from "./components/TopBar";
+import { Watermark } from "./components/Watermark";
 import { DAYS } from "./data/days";
 import { useSelection } from "./hooks/useSelection";
 import { useToast } from "./hooks/useToast";
@@ -91,6 +92,7 @@ export default function App() {
       <TopBar username={username} count={count} submitting={submitting} onSubmit={handleSubmit} />
       <Book days={DAYS} isSelected={isSelected} onToggle={toggle} onPageChange={setCurrent} />
       <Pager days={DAYS} current={current} />
+      <Watermark />
       <Toast message={message} />
       {confirmingResubmit && (
         <ConfirmDialog
