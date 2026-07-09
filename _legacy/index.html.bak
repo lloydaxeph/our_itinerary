@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Hanoi &amp; Sapa — Nov 4–10</title>
+<style>
+  :root{
+    --paper:#F7F3EA;
+    --ink:#26221C;
+    --ink-soft:#6E675C;
+    --line:#E2DACA;
+    --card:#FFFFFF;
+    /* Hanoi: lacquer red & old-gold */
+    --han:#A62B24;
+    --han-deep:#7C1F1A;
+    --han-tint:#FBEFE9;
+    --han-gold:#C9962E;
+    /* Sapa: mist teal & moss */
+    --sapa:#2F6B5C;
+    --sapa-deep:#204F44;
+    --sapa-tint:#EBF2EE;
+    --sapa-gold:#8AA84F;
+    --radius:14px;
+    --shadow:0 1px 3px rgba(38,34,28,.10), 0 4px 14px rgba(38,34,28,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    overflow:hidden;
+  }
+  .serif{font-family:"Iowan Old Style",Palatino,"Palatino Linotype",Georgia,serif}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+  /* ---------- Top bar ---------- */
+  #topbar{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:calc(env(safe-area-inset-top, 0px) + 10px) 14px 10px 16px;
+    pointer-events:none;
+    background:linear-gradient(to bottom, rgba(247,243,234,.96) 55%, rgba(247,243,234,0));
+  }
+  #tripTag{pointer-events:auto}
+  #tripTag .t1{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+  #tripTag .t2{font-size:15px;font-weight:700}
+  #exportBtn{
+    pointer-events:auto;
+    display:flex;align-items:center;gap:7px;
+    min-height:44px;padding:0 16px;
+    border:none;border-radius:999px;
+    background:var(--ink);color:#F7F3EA;
+    font-size:14px;font-weight:600;letter-spacing:.02em;
+    box-shadow:var(--shadow);cursor:pointer;
+  }
+  #exportBtn:active{transform:scale(.97)}
+  #exportBtn .badge{
+    min-width:22px;height:22px;padding:0 6px;
+    display:none;align-items:center;justify-content:center;
+    background:#F7F3EA;color:var(--ink);
+    border-radius:999px;font-size:12px;font-weight:800;
+  }
+  #exportBtn .badge.show{display:flex}
+
+  /* ---------- Book ---------- */
+  #book{
+    display:flex;height:100dvh;
+    overflow-x:auto;overflow-y:hidden;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  #book::-webkit-scrollbar{display:none}
+  .page{
+    flex:0 0 100%;width:100%;height:100%;
+    scroll-snap-align:start;scroll-snap-stop:always;
+    overflow-y:auto;overflow-x:hidden;
+    padding:calc(env(safe-area-inset-top,0px) + 68px) 16px 96px;
+  }
+  .page.city-hanoi{--accent:var(--han);--accent-deep:var(--han-deep);--tint:var(--han-tint);--gold:var(--han-gold)}
+  .page.city-sapa {--accent:var(--sapa);--accent-deep:var(--sapa-deep);--tint:var(--sapa-tint);--gold:var(--sapa-gold)}
+
+  /* ---------- Ticket header (signature) ---------- */
+  .ticket{
+    position:relative;
+    background:var(--accent);color:#FBF7EE;
+    border-radius:var(--radius);
+    padding:16px 18px 14px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .ticket::after{ /* perforation */
+    content:"";position:absolute;left:10px;right:10px;bottom:34px;height:0;
+    border-top:2px dashed rgba(251,247,238,.4);
+  }
+  .ticket .punch-l,.ticket .punch-r{
+    position:absolute;bottom:24px;width:20px;height:20px;border-radius:50%;
+    background:var(--paper);
+  }
+  .ticket .punch-l{left:-10px}.ticket .punch-r{right:-10px}
+  .ticket .row1{display:flex;justify-content:space-between;align-items:baseline}
+  .ticket .daynum{font-size:11px;letter-spacing:.22em;text-transform:uppercase;opacity:.85}
+  .ticket .date{font-size:26px;font-weight:400;line-height:1.15;margin-top:2px}
+  .ticket .city{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    background:rgba(251,247,238,.16);padding:5px 10px;border-radius:999px}
+  .ticket .route{
+    margin-top:20px;display:flex;justify-content:space-between;align-items:center;
+    font-size:12px;letter-spacing:.1em;opacity:.9
+  }
+  .ticket .route b{font-size:13px;letter-spacing:.18em}
+
+  .daynote{
+    margin:12px 2px 4px;font-size:13px;line-height:1.5;color:var(--ink-soft);
+  }
+  .daynote b{color:var(--ink)}
+
+  /* ---------- Time blocks ---------- */
+  .block{margin-top:22px}
+  .block-head{
+    display:flex;align-items:center;gap:10px;margin-bottom:10px;
+  }
+  .block-head .time{
+    font-size:12px;font-weight:700;letter-spacing:.06em;
+    color:var(--accent-deep);
+    background:var(--tint);
+    border:1px solid var(--line);
+    padding:6px 10px;border-radius:8px;white-space:nowrap;
+  }
+  .block-head .label{font-size:13px;color:var(--ink-soft)}
+  .block-head::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .transit{
+    display:flex;gap:10px;align-items:flex-start;
+    background:var(--tint);border:1px dashed var(--accent);
+    border-radius:var(--radius);padding:12px 14px;
+    font-size:13.5px;line-height:1.5;color:var(--ink);
+    margin-bottom:10px;
+  }
+  .transit .ico{font-size:16px;line-height:1.3}
+
+  /* ---------- Cards ---------- */
+  .card{
+    display:flex;flex-wrap:wrap;align-items:stretch;gap:10px;
+    background:var(--card);
+    border:1.5px solid var(--line);
+    border-radius:var(--radius);
+    padding:12px 12px 12px 14px;
+    margin-bottom:10px;
+    box-shadow:var(--shadow);
+    cursor:pointer;user-select:none;-webkit-user-select:none;
+    transition:background .15s,border-color .15s,color .15s;
+  }
+  .card .main{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:3px}
+  .card .name{font-size:15px;font-weight:700;line-height:1.3;display:flex;align-items:center;gap:7px}
+  .card .desc{font-size:12.5px;line-height:1.45;color:var(--ink-soft)}
+
+  /* bottom-center expand tab (chevron only) */
+  .card .expandbar{
+    flex-basis:100%;
+    display:flex;align-items:center;justify-content:center;
+    min-height:26px;
+    margin:6px -12px -12px -14px;
+    background:var(--tint);
+    border-top:1px dashed var(--line);
+    border-radius:0 0 12px 12px;
+    color:var(--accent-deep);
+  }
+  .card .expandbar .arrow{font-size:8px;transition:transform .2s}
+  .card.expanded .expandbar .arrow{transform:rotate(180deg)}
+  .card.selected .expandbar{
+    background:rgba(0,0,0,.14);
+    border-top-color:rgba(251,247,238,.35);
+    color:#FBF7EE;
+  }
+
+  /* checkbox (selection) */
+  .card .cbwrap{
+    flex:0 0 44px;min-height:44px;align-self:center;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+  }
+  .card .cb{
+    appearance:none;-webkit-appearance:none;
+    width:26px;height:26px;margin:0;
+    border:2px solid var(--accent);border-radius:8px;
+    background:#fff;cursor:pointer;position:relative;
+    transition:background .15s,border-color .15s;
+  }
+  .card .cb:checked{background:var(--accent);border-color:var(--accent-deep)}
+  .card .cb:checked::after{
+    content:"✓";position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    color:#FBF7EE;font-size:15px;font-weight:900;
+  }
+  .card.selected{
+    background:var(--accent);border-color:var(--accent-deep);color:#FBF7EE;
+  }
+  .card.selected .desc{color:rgba(251,247,238,.82)}
+  .card.selected .cb{border-color:#FBF7EE;background:transparent}
+  .card.selected .cb:checked{background:#FBF7EE;border-color:#FBF7EE}
+  .card.selected .cb:checked::after{color:var(--accent-deep)}
+
+  /* expandable photo gallery */
+  .card .gallery{flex-basis:100%;display:none;padding-top:10px;border-top:1px dashed var(--line)}
+  .card.expanded .gallery{display:block}
+  .card.selected .gallery{border-top-color:rgba(251,247,238,.35)}
+  .gallery .status{font-size:12px;color:var(--ink-soft);margin-bottom:8px}
+  .card.selected .gallery .status{color:rgba(251,247,238,.85)}
+  .gallery .imgs{
+    display:flex;gap:6px;
+    overflow-x:auto;overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+    scroll-snap-type:x proximity;
+    scrollbar-width:none;
+    margin:0 -12px 0 -14px;padding:0 14px;
+  }
+  .gallery .imgs::-webkit-scrollbar{display:none}
+  .gallery .imgs:empty{display:none}
+  .gallery img{
+    flex:0 0 auto;width:150px;height:110px;object-fit:cover;
+    border-radius:8px;background:rgba(0,0,0,.08);display:block;
+    scroll-snap-align:start;
+  }
+  .gallery .ph{flex:0 0 auto;width:150px;height:110px;border-radius:8px;background:rgba(0,0,0,.08);
+    animation:pulse 1.2s ease-in-out infinite;scroll-snap-align:start}
+  @keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+  .gallery .more{
+    display:inline-block;margin-top:9px;
+    font-size:12.5px;font-weight:700;text-decoration:none;
+    color:var(--accent-deep);
+    border-bottom:1.5px solid var(--accent);padding-bottom:1px;
+  }
+  .card.selected .gallery .more{color:#FBF7EE;border-bottom-color:rgba(251,247,238,.65)}
+
+  /* ---------- Page indicator ---------- */
+  #pager{
+    position:fixed;left:0;right:0;bottom:0;z-index:50;
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    padding:10px 0 calc(env(safe-area-inset-bottom,0px) + 12px);
+    background:linear-gradient(to top, rgba(247,243,234,.96) 60%, rgba(247,243,234,0));
+    pointer-events:none;
+  }
+  #dots{display:flex;gap:7px}
+  #dots .dot{
+    width:7px;height:7px;border-radius:50%;
+    background:#CFC6B4;transition:all .2s;
+  }
+  #dots .dot.on{width:20px;border-radius:999px;background:var(--ink)}
+  #pageLabel{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+
+  /* ---------- Toast ---------- */
+  #toast{
+    position:fixed;left:50%;bottom:90px;z-index:60;
+    transform:translateX(-50%) translateY(16px);
+    background:var(--ink);color:#F7F3EA;
+    font-size:13.5px;padding:12px 18px;border-radius:12px;
+    box-shadow:var(--shadow);
+    opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+    max-width:88vw;text-align:center;
+  }
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important}
+  }
+  .card:focus-visible,.card .cb:focus-visible,.card .more:focus-visible,#exportBtn:focus-visible{
+    outline:3px solid var(--han-gold);outline-offset:2px;
+  }
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div id="tripTag">
+    <div class="t1">Vietnam · Nov 4–10</div>
+    <div class="t2 serif">Hanoi &amp; Sapa</div>
+  </div>
+  <button id="exportBtn" type="button" aria-label="Export selected places as CSV">
+    ⬇ Export <span class="badge" id="exportBadge">0</span>
+  </button>
+</div>
+
+<div id="book" aria-label="Itinerary pages, swipe left and right"></div>
+
+<div id="pager">
+  <div id="dots"></div>
+  <div id="pageLabel">Day 1 of 7</div>
+</div>
+
+<div id="toast" role="status"></div>
+
+<script>
+/* ================= DATA ================= */
+const DAYS = [
+  {
+    date:"2026-11-04", nice:"Tue, Nov 4", city:"Hanoi", route:["Home","HANOI"],
+    note:"Arrive around lunchtime. Tonight: <b>sleeper train to Sapa (Lao Cai), dep. ~9:30 PM</b> from Hanoi Station. Keep bags packed light for the train.",
+    blocks:[
+      { time:"5AM–8AM", label:"In transit",
+        transit:"✈️ Flight to Hanoi — on the way. Rest up, today runs late.", items:[] },
+      { time:"8AM–12PM", label:"Arrival",
+        transit:"🛬 Land at Noi Bai Airport, immigration & SIM card, head into the city (~45 min).",
+        items:[
+          {n:"Airport Bus 86 to Old Quarter", d:"Cheap, easy express bus straight to Hoan Kiem — a scenic first look at Hanoi."},
+          {n:"Grab car to hotel", d:"Fastest door-to-door option; book in the app, no haggling needed."},
+        ]},
+      { time:"12PM–5PM", label:"First taste of Hanoi",
+        items:[
+          {n:"Pho Thin Lo Duc", d:"Legendary stir-fried-beef pho — the perfect first meal in Vietnam."},
+          {n:"Hoan Kiem Lake loop", d:"Easy lakeside walk to shake off the flight; see Turtle Tower."},
+          {n:"Ngoc Son Temple", d:"Small island temple over the red Huc Bridge on Hoan Kiem Lake."},
+          {n:"Old Quarter first wander", d:"Get lost in the 36 guild streets — silk, tin, herbs, chaos."},
+          {n:"Egg coffee at Cafe Giang", d:"Birthplace of ca phe trung: whipped egg yolk over dark coffee."},
+        ]},
+      { time:"5PM–10PM", label:"Dinner, then night train",
+        transit:"🚆 Sleeper train to Lao Cai departs ~9:30 PM from Hanoi Station (Tran Quy Cap gate). Arrive 45 min early.",
+        items:[
+          {n:"Bun Cha Huong Lien", d:"Smoky grilled-pork bun cha — the “Obama combo” spot."},
+          {n:"Train Street cafe (early evening)", d:"Coffee inches from the tracks in a lantern-lit alley."},
+          {n:"Banh mi for the train", d:"Grab Banh Mi 25 to-go — best midnight snack on a sleeper."},
+        ]},
+    ]
+  },
+  {
+    date:"2026-11-05", nice:"Wed, Nov 5", city:"Sapa", route:["LAO CAI","SAPA"],
+    note:"Arrive Lao Cai ~6 AM, then a winding 1-hour shuttle up to Sapa. November is cool (10–18°C) and often misty — <b>bring layers</b>.",
+    blocks:[
+      { time:"5AM–8AM", label:"Arrival morning",
+        transit:"🚆 Train arrives Lao Cai ~6 AM → shared van/shuttle up the mountain to Sapa town (~1 hr).",
+        items:[
+          {n:"Sunrise on the mountain road", d:"Grab a window seat — terraced valleys emerging from fog."},
+          {n:"Hot pho breakfast in Sapa town", d:"Steaming bowl to warm up after the night train."},
+        ]},
+      { time:"8AM–12PM", label:"Settle into Sapa",
+        items:[
+          {n:"Early hotel check-in & shower", d:"Drop bags, freshen up — most hotels hold luggage if room isn't ready."},
+          {n:"Sapa Stone Church & main square", d:"The 1895 granite church is the heart of town life."},
+          {n:"Sapa Market", d:"Hmong and Dao traders, brocade textiles, mountain herbs."},
+          {n:"Coffee with a valley view", d:"Fog rolling over Muong Hoa from a cliffside cafe terrace."},
+        ]},
+      { time:"12PM–5PM", label:"Gentle first afternoon",
+        items:[
+          {n:"Cat Cat Village walk", d:"Closest village to town — waterfalls, water wheels, Hmong houses."},
+          {n:"Sapa Lake stroll", d:"Calm lakeside loop right in the town center."},
+          {n:"Salmon hotpot lunch", d:"Sapa's mountain specialty — river salmon simmered at your table."},
+          {n:"Ham Rong Mountain gardens", d:"Stone steps to flower gardens and a view over Sapa's rooftops."},
+        ]},
+      { time:"5PM–10PM", label:"Cozy evening",
+        items:[
+          {n:"Sapa Night Market", d:"Grilled skewers, sticky rice in bamboo, warm soy milk."},
+          {n:"Herbal bath (Red Dao style)", d:"Traditional Dao medicinal soak — perfect after the night train."},
+          {n:"Grilled street food alley", d:"Corn, eggs, pork skewers over charcoal in the cold air."},
+        ]},
+    ]
+  },
+  {
+    date:"2026-11-06", nice:"Thu, Nov 6", city:"Sapa", route:["SAPA","FANSIPAN"],
+    note:"Big day. Go up <b>Fansipan early</b> — mornings give the best chance above the clouds before afternoon fog.",
+    blocks:[
+      { time:"5AM–8AM", label:"Misty sunrise",
+        items:[
+          {n:"Sunrise over Muong Hoa Valley", d:"Sea of clouds below the viewpoints on a lucky morning."},
+          {n:"Banh mi & hot soy milk breakfast", d:"Quick street breakfast before the cable car."},
+          {n:"Early photos at O Quy Ho viewpoint", d:"One of Vietnam's four great mountain passes at first light."},
+        ]},
+      { time:"8AM–12PM", label:"Roof of Indochina",
+        items:[
+          {n:"Fansipan cable car", d:"20-minute ride over the valley to Vietnam's highest peak (3,143 m)."},
+          {n:"Summit pagodas & Giant Buddha", d:"Temple complex in the clouds near the summit."},
+          {n:"Muong Hoa funicular railway", d:"Charming vintage-style train from town to the cable car station."},
+        ]},
+      { time:"12PM–5PM", label:"Into the valley",
+        items:[
+          {n:"Trek Muong Hoa Valley", d:"The classic walk through layered rice terraces."},
+          {n:"Lao Chai & Ta Van villages", d:"Black Hmong and Giay villages along the valley floor."},
+          {n:"Lunch at a Ta Van homestay", d:"Home-cooked mountain food with valley views."},
+          {n:"Ancient rock carvings field", d:"Mysterious centuries-old petroglyphs among the terraces."},
+        ]},
+      { time:"5PM–10PM", label:"Night in the mountains",
+        items:[
+          {n:"Thang co & apple wine tasting", d:"H'mong specialties for the adventurous — local corn & apple wine."},
+          {n:"Sapa Lake at night", d:"Lights reflecting on the water, cool mountain air."},
+          {n:"Hotpot dinner to warm up", d:"November evenings drop below 12°C — hotpot weather."},
+        ]},
+    ]
+  },
+  {
+    date:"2026-11-07", nice:"Fri, Nov 7", city:"Sapa", route:["SAPA","LAO CAI"],
+    note:"Last Sapa day. Tonight: <b>sleeper train back to Hanoi, dep. ~9:30 PM</b> from Lao Cai — shuttle down by ~7:30 PM.",
+    blocks:[
+      { time:"5AM–8AM", label:"One last sunrise",
+        items:[
+          {n:"Final misty sunrise viewpoint", d:"Last chance for the cloud-sea over the valley."},
+          {n:"Breakfast at a cliffside cafe", d:"Slow coffee, big view — no rush this morning."},
+        ]},
+      { time:"8AM–12PM", label:"Waterfalls & the pass",
+        items:[
+          {n:"Silver Waterfall (Thac Bac)", d:"100 m cascade on the O Quy Ho road, 15 min from town."},
+          {n:"Love Waterfall & Golden Stream", d:"Short forest trek to a storybook waterfall."},
+          {n:"Heaven's Gate, O Quy Ho Pass", d:"Sweeping top-of-the-pass panorama toward Lai Chau."},
+        ]},
+      { time:"12PM–5PM", label:"Souvenirs & slow goodbye",
+        items:[
+          {n:"Brocade & Hmong craft shopping", d:"Indigo-dyed textiles and silver — buy direct from makers."},
+          {n:"Last valley viewpoint coffee", d:"One more look at the terraces before heading down."},
+          {n:"Early salmon hotpot dinner", d:"Eat well in Sapa — train snacks are slim."},
+        ]},
+      { time:"5PM–10PM", label:"Down the mountain",
+        transit:"🚐 Shuttle Sapa → Lao Cai (~1 hr), then 🚆 sleeper train to Hanoi departs ~9:30 PM.",
+        items:[
+          {n:"Dinner near Lao Cai station", d:"Simple rice or noodle spots if you go down early."},
+          {n:"Snacks & water for the train", d:"Stock up at a mini-mart before boarding."},
+        ]},
+    ]
+  },
+  {
+    date:"2026-11-08", nice:"Sat, Nov 8", city:"Hanoi", route:["LAO CAI","HANOI"],
+    note:"Train arrives Hanoi ~5:30 AM. Hanoi is at its best at dawn — lean into the early start, nap later if needed.",
+    blocks:[
+      { time:"5AM–8AM", label:"Hanoi at dawn",
+        transit:"🚆 Arrive Hanoi Station ~5:30 AM. Drop bags at the hotel (early check-in or luggage storage).",
+        items:[
+          {n:"Tai chi at Hoan Kiem Lake", d:"Join locals exercising around the lake at sunrise."},
+          {n:"Pho breakfast, dawn edition", d:"Pho tastes best at 6 AM on a tiny plastic stool."},
+          {n:"Long Bien Bridge sunrise walk", d:"Eiffel-era iron bridge over the Red River, trains and mopeds."},
+        ]},
+      { time:"8AM–12PM", label:"Imperial Hanoi",
+        items:[
+          {n:"Temple of Literature", d:"Vietnam's first university (1070) — courtyards, stelae, bonsai."},
+          {n:"Ho Chi Minh Mausoleum complex", d:"Ba Dinh Square, the stilt house and One Pillar Pagoda."},
+          {n:"Imperial Citadel of Thang Long", d:"UNESCO site — a millennium of Vietnamese dynasties."},
+        ]},
+      { time:"12PM–5PM", label:"Museums & silk",
+        items:[
+          {n:"Bun cha lunch in the Old Quarter", d:"Charcoal-grilled pork patties with herbs and noodles."},
+          {n:"Hoa Lo Prison Museum", d:"Sobering, well-told history — the “Hanoi Hilton.”"},
+          {n:"Vietnamese Women's Museum", d:"One of Hanoi's best museums — often overlooked."},
+          {n:"Hang Gai silk street", d:"Tailors and silk shops on “Silk Street.”"},
+        ]},
+      { time:"5PM–10PM", label:"Hanoi by night",
+        items:[
+          {n:"Thang Long Water Puppet Theatre", d:"A thousand-year-old art form — puppets dancing on water."},
+          {n:"Ta Hien “Beer Street”", d:"Fresh bia hoi on low stools in the busiest corner of the Old Quarter."},
+          {n:"Street food crawl", d:"Banh cuon, nem chua ran, che desserts — graze street by street."},
+        ]},
+    ]
+  },
+  {
+    date:"2026-11-09", nice:"Sun, Nov 9", city:"Hanoi", route:["HANOI","WEST LAKE"],
+    note:"Weekend bonus: streets around Hoan Kiem become <b>pedestrian-only</b> — great evening atmosphere.",
+    blocks:[
+      { time:"5AM–8AM", label:"Market dawn",
+        items:[
+          {n:"Quang Ba flower market", d:"Wholesale flower market at its peak before sunrise."},
+          {n:"Banh cuon breakfast", d:"Silky steamed rice rolls made to order on a cloth drum."},
+          {n:"Hoan Kiem morning people-watching", d:"Aerobics, badminton, ballroom dancing by the lake."},
+        ]},
+      { time:"8AM–12PM", label:"West Lake & beyond",
+        items:[
+          {n:"Tran Quoc Pagoda", d:"Hanoi's oldest pagoda on a West Lake islet — 1,500 years old."},
+          {n:"West Lake loop by bike or scooter", d:"17 km of lakeside cafes, temples and villas."},
+          {n:"Bat Trang ceramic village", d:"Half-day pottery village trip — throw your own bowl."},
+          {n:"Museum of Ethnology", d:"Vietnam's 54 ethnic groups, with full-size stilt houses outside."},
+        ]},
+      { time:"12PM–5PM", label:"Classic afternoon",
+        items:[
+          {n:"Cha ca La Vong lunch", d:"Turmeric fish sizzled with dill at your table — a Hanoi original."},
+          {n:"St. Joseph's Cathedral quarter", d:"Neo-gothic cathedral, boutiques and lemon tea corners."},
+          {n:"Note Coffee or hidden cafes", d:"Hanoi's cafe culture — sticky notes, courtyards, balconies."},
+        ]},
+      { time:"5PM–10PM", label:"Last big night",
+        items:[
+          {n:"Hoan Kiem walking street (weekend)", d:"Car-free streets, buskers and games around the lake."},
+          {n:"Train Street at passing time", d:"Feel the train squeeze past — check passing schedule with the cafe."},
+          {n:"Rooftop cocktails over the lake", d:"Skyline views of Hoan Kiem lit up at night."},
+          {n:"Che dessert tasting", d:"Sweet soups & jellies — Vietnam's dessert universe."},
+        ]},
+    ]
+  },
+  {
+    date:"2026-11-10", nice:"Mon, Nov 10", city:"Hanoi", route:["HANOI","Home"],
+    note:"Departure day. Keep the morning close to the hotel; airport is ~45 min away — leave 3 hours before your flight.",
+    blocks:[
+      { time:"5AM–8AM", label:"Slow last morning",
+        items:[
+          {n:"One last egg coffee", d:"A farewell ca phe trung at a balcony cafe."},
+          {n:"Final Hoan Kiem lake loop", d:"Say goodbye to the lake where the trip began."},
+        ]},
+      { time:"8AM–12PM", label:"Last bites & gifts",
+        items:[
+          {n:"Dong Xuan Market souvenirs", d:"Coffee beans, dried fruit, conical hats — haggle happily."},
+          {n:"Banh Mi 25 farewell sandwich", d:"The classic last meal before the airport."},
+          {n:"Hanoi Train Street morning coffee", d:"Quieter in the morning — one last photo."},
+        ]},
+      { time:"12PM–5PM", label:"To the airport",
+        transit:"🛫 Check out, head to Noi Bai Airport (~45 min by Grab or Bus 86). Aim to arrive 3 hrs before an international flight.",
+        items:[
+          {n:"Airport pho or banh mi", d:"Decent last-chance Vietnamese food after security."},
+        ]},
+      { time:"5PM–10PM", label:"Departure",
+        transit:"✈️ Fly home — with a phone full of terraces, lanterns and fog.", items:[] },
+    ]
+  },
+];
+
+/* ================= STATE ================= */
+const selected = new Set();          // ids like "0-2-1" = day-block-item
+const $ = s => document.querySelector(s);
+
+/* ================= RENDER ================= */
+const book = $("#book");
+const dots = $("#dots");
+
+DAYS.forEach((day, di) => {
+  const cityClass = day.city === "Sapa" ? "city-sapa" : "city-hanoi";
+  const page = document.createElement("section");
+  page.className = "page " + cityClass;
+  page.dataset.index = di;
+
+  let html = `
+    <header class="ticket">
+      <div class="row1">
+        <div>
+          <div class="daynum mono">Day ${di+1} · ${day.date}</div>
+          <div class="date serif">${day.nice}</div>
+        </div>
+        <div class="city">${day.city}</div>
+      </div>
+      <div class="punch-l"></div><div class="punch-r"></div>
+      <div class="route mono"><b>${day.route[0]}</b><span>· · · ➤ · · ·</span><b>${day.route[1]}</b></div>
+    </header>
+    <p class="daynote">${day.note}</p>
+  `;
+
+  day.blocks.forEach((b, bi) => {
+    html += `<div class="block">
+      <div class="block-head">
+        <span class="time mono">${b.time}</span>
+        <span class="label">${b.label}</span>
+      </div>`;
+    if (b.transit) {
+      const ico = b.transit.slice(0, b.transit.indexOf(" "));
+      const txt = b.transit.slice(b.transit.indexOf(" ") + 1);
+      html += `<div class="transit"><span class="ico">${ico}</span><span>${txt}</span></div>`;
+    }
+    b.items.forEach((it, ii) => {
+      const id = `${di}-${bi}-${ii}`;
+      const gq = encodeURIComponent(`${it.n} ${day.city} Vietnam`);
+      html += `
+      <div class="card" data-id="${id}" data-name="${escAttr(it.n)}" data-desc="${escAttr(it.d)}"
+           data-date="${day.date}" data-day="Day ${di+1}" data-city="${day.city}" data-time="${b.time}"
+           role="button" tabindex="0" aria-expanded="false">
+        <div class="main">
+          <div class="name"><span>${it.n}</span></div>
+          <div class="desc">${it.d}</div>
+        </div>
+        <label class="cbwrap">
+          <input type="checkbox" class="cb" aria-label="Select ${escAttr(it.n)}">
+        </label>
+        <div class="gallery">
+          <div class="status"></div>
+          <div class="imgs"></div>
+          <a class="more" href="https://www.google.com/search?tbm=isch&q=${gq}"
+             target="_blank" rel="noopener">See more on Google Images →</a>
+        </div>
+        <div class="expandbar" aria-hidden="true"><span class="arrow">▼</span></div>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+
+  page.innerHTML = html;
+  book.appendChild(page);
+
+  const dot = document.createElement("span");
+  dot.className = "dot" + (di === 0 ? " on" : "");
+  dots.appendChild(dot);
+});
+
+function escAttr(s){return s.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;")}
+
+/* ================= CARD INTERACTIONS ================= */
+/* Tap card body  -> expand & show 3 photos.
+   Tap checkbox   -> select/deselect (doesn't expand). */
+book.addEventListener("click", e => {
+  if (e.target.closest(".cbwrap")) return;            // checkbox handled by "change"
+  if (e.target.closest(".more")) return;              // let the Google link work
+  const card = e.target.closest(".card");
+  if (card) toggleExpand(card);
+});
+book.addEventListener("change", e => {
+  if (!e.target.classList.contains("cb")) return;
+  const card = e.target.closest(".card");
+  const id = card.dataset.id;
+  const on = e.target.checked;
+  if (on) selected.add(id); else selected.delete(id);
+  card.classList.toggle("selected", on);
+  updateBadge();
+});
+book.addEventListener("keydown", e => {
+  if ((e.key === "Enter" || e.key === " ") && e.target.classList.contains("card")) {
+    e.preventDefault();
+    toggleExpand(e.target);
+  }
+});
+
+function toggleExpand(card){
+  const open = !card.classList.contains("expanded");
+  card.classList.toggle("expanded", open);
+  card.setAttribute("aria-expanded", open);
+  if (open) loadImages(card);
+}
+
+/* ---- photo loading ----
+   By default photos come from Wikimedia Commons (free, no key needed).
+   To show Google's actual top image results instead:
+     1. Create a free API key:  https://developers.google.com/custom-search/v1/overview
+     2. Create a Programmable Search Engine (enable "Image search" + "Search the entire web")
+        at https://programmablesearchengine.google.com and copy its "Search engine ID".
+     3. Paste both below. Note: free tier = 100 searches/day; don't share the file publicly
+        with your key inside. */
+const GOOGLE_API_KEY = "";   // e.g. "AIzaSy..."
+const GOOGLE_CX      = "";   // e.g. "a1b2c3d4e5f6g7h8i"
+const IMG_COUNT = 5;
+
+async function loadImages(card){
+  if (card.dataset.imgState === "done" || card.dataset.imgState === "loading") return;
+  card.dataset.imgState = "loading";
+  const status = card.querySelector(".status");
+  const imgsEl = card.querySelector(".imgs");
+  status.textContent = "Loading photos…";
+  imgsEl.innerHTML = '<div class="ph"></div>'.repeat(IMG_COUNT);
+
+  const q = `${card.dataset.name} ${card.dataset.city} Vietnam`;
+  try {
+    let imgs = [];
+    if (GOOGLE_API_KEY && GOOGLE_CX) {
+      imgs = await googleImages(q);
+    }
+    if (imgs.length === 0) {
+      imgs = await commonsSearch(`${card.dataset.name} ${card.dataset.city}`);
+      if (imgs.length === 0) imgs = await commonsSearch(`${card.dataset.name} Vietnam`);
+    }
+    imgsEl.innerHTML = "";
+    if (imgs.length === 0) {
+      card.dataset.imgState = "done";
+      status.textContent = "No photos found for this one — try the link below.";
+      return;
+    }
+    imgs.forEach(item => {
+      const im = document.createElement("img");
+      im.loading = "lazy";
+      im.alt = card.dataset.name;
+      im.src = item.src;
+      if (item.fallback) im.onerror = () => { im.onerror = null; im.src = item.fallback; };
+      else im.onerror = () => im.remove();
+      imgsEl.appendChild(im);
+    });
+    status.textContent = "";
+    card.dataset.imgState = "done";
+  } catch (err) {
+    imgsEl.innerHTML = "";
+    card.dataset.imgState = "";   // allow retry on next expand
+    status.textContent = "Couldn't load photos — check your connection, or use the link below.";
+  }
+}
+
+/* Google's top image results (requires API key + engine ID above) */
+async function googleImages(q){
+  const url = "https://www.googleapis.com/customsearch/v1"
+    + "?key=" + encodeURIComponent(GOOGLE_API_KEY)
+    + "&cx=" + encodeURIComponent(GOOGLE_CX)
+    + "&searchType=image&num=" + IMG_COUNT
+    + "&q=" + encodeURIComponent(q);
+  const r = await fetch(url);
+  if (!r.ok) return [];   // quota exceeded / bad key -> fall back to Wikimedia
+  const j = await r.json();
+  return (j.items || []).map(it => ({
+    src: it.link,                                   // full-size image, hotlinked
+    fallback: it.image && it.image.thumbnailLink    // Google-hosted thumb if the site blocks hotlinking
+  }));
+}
+
+async function commonsSearch(q){
+  const url = "https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*"
+    + "&generator=search&gsrnamespace=6&gsrlimit=12"
+    + "&gsrsearch=" + encodeURIComponent(q)
+    + "&prop=imageinfo&iiprop=url%7Cmime&iiurlwidth=480";
+  const r = await fetch(url);
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  const j = await r.json();
+  const pages = j.query && j.query.pages ? Object.values(j.query.pages) : [];
+  return pages
+    .sort((a,b) => (a.index||0) - (b.index||0))            // keep relevance order
+    .map(p => p.imageinfo && p.imageinfo[0])
+    .filter(i => i && /^image\/(jpeg|png|webp|gif)/.test(i.mime))
+    .map(i => ({ src: i.thumburl || i.url }))
+    .slice(0, IMG_COUNT);
+}
+
+function updateBadge(){
+  const b = $("#exportBadge");
+  b.textContent = selected.size;
+  b.classList.toggle("show", selected.size > 0);
+}
+
+/* ================= EXPORT CSV ================= */
+$("#exportBtn").addEventListener("click", () => {
+  if (selected.size === 0) { toast("No places selected yet — tap a card to add it to your plan."); return; }
+
+  const rows = [["Date","Day","City","Time Block","Place/Activity","Description"]];
+  // keep itinerary order: iterate DOM order
+  document.querySelectorAll(".card").forEach(c => {
+    if (!selected.has(c.dataset.id)) return;
+    rows.push([c.dataset.date, c.dataset.day, c.dataset.city, c.dataset.time, c.dataset.name, c.dataset.desc]);
+  });
+
+  const csv = rows.map(r => r.map(f => `"${String(f).replace(/"/g,'""')}"`).join(",")).join("\r\n");
+  const blob = new Blob(["\uFEFF" + csv], {type:"text/csv;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "hanoi-sapa-itinerary.csv";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  toast(`Exported ${selected.size} selected place${selected.size>1?"s":""} ✓`);
+});
+
+/* ================= TOAST ================= */
+let toastTimer;
+function toast(msg){
+  const t = $("#toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+}
+
+/* ================= PAGER ================= */
+const pages = [...document.querySelectorAll(".page")];
+const dotEls = [...dots.children];
+let current = 0;
+book.addEventListener("scroll", () => {
+  const i = Math.round(book.scrollLeft / book.clientWidth);
+  if (i !== current && pages[i]) {
+    current = i;
+    dotEls.forEach((d, di) => d.classList.toggle("on", di === i));
+    $("#pageLabel").textContent = `Day ${i+1} of 7 · ${DAYS[i].city}`;
+  }
+}, {passive:true});
+$("#pageLabel").textContent = `Day 1 of 7 · ${DAYS[0].city}`;
+</script>
+</body>
+</html>

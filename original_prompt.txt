@@ -1,0 +1,38 @@
+Create a single, self-contained, mobile-first HTML file (all CSS and JavaScript inline, no external libraries) that works as an interactive travel itinerary planner.
+
+## Trip details
+- Trip: Hanoi + Sapa, Vietnam — November 4 to November 10, 2026
+- Nov 4: Arrive in Hanoi around lunchtime (~12PM). Night sleeper train to Sapa (Lao Cai) departing ~9:30PM from Hanoi Station.
+- Nov 5: Train arrives Lao Cai ~6AM, shuttle up to Sapa (~1hr). Full day in Sapa.
+- Nov 6: Full day in Sapa.
+- Nov 7: Day in Sapa until evening. Shuttle down to Lao Cai, night sleeper train back to Hanoi departing ~9:30PM.
+- Nov 8: Train arrives Hanoi ~5:30AM. Full day in Hanoi.
+- Nov 9: Full day in Hanoi.
+- Nov 10: Final day in Hanoi (departure day, airport ~45 min away).
+
+## Book layout
+1. One "page" per day (7 pages, Nov 4–10) arranged horizontally with CSS scroll-snap; swipe left/right between pages with snap-to-page. Fixed page indicator at the bottom: dots + "Day X of 7 · City", updating on scroll.
+2. Each page has a ticket-style header (date, day number, city badge, route like "HANOI → LAO CAI") and a short day note (e.g., train departure reminders, November weather in Sapa: cool 10–18°C, misty, bring layers).
+3. Each day is divided into 4 fixed time blocks: 5AM–8AM, 8AM–12PM, 12PM–5PM, 5PM–10PM. Always show all 4, even on travel days. Transit segments (flight, sleeper trains, shuttle, airport transfer) appear as visually distinct dashed "transit" strips inside the relevant block, not as cards.
+4. Under each time block, 2–5 recommended places/activities matched to the time of day (sunrise spots/markets early, sightseeing mid-day, food/nightlife in the evening). Hanoi: Old Quarter, Hoan Kiem Lake, Train Street, Temple of Literature, egg coffee, water puppet theatre, pho/bun cha spots, Quang Ba flower market, West Lake, museums. Sapa: Fansipan cable car, Cat Cat Village, Muong Hoa Valley trek, Lao Chai/Ta Van, Silver & Love waterfalls, O Quy Ho Pass, night market, salmon hotpot, Red Dao herbal bath.
+
+## Card design & behavior (important)
+5. Each suggestion is a clean white rounded card with soft shadow: place name + one-line description on the left, and a CHECKBOX on the right.
+6. SELECTION = checkbox only. Ticking the checkbox selects the card (whole card fills with the city accent color, checkbox inverts); unticking deselects. Clicking the card body must NOT change selection. Selection persists while swiping between pages (in-memory; do not use localStorage).
+7. EXPAND = tapping the card body (or a small chevron tab). Each card has a slim full-width tab at its bottom center containing only a small ▼ chevron (no text) that flips when open. Tapping the card body or tab expands the card to reveal a photo section; tapping again collapses it.
+8. PHOTO SECTION (inside the expanded area):
+   - A horizontal, left-right scrollable strip of 5 photos (~150×110px thumbnails, scroll-snap, hidden scrollbar), hotlinked (never downloaded).
+   - Photos load lazily the first time a card is expanded, with pulsing placeholder boxes and a "Loading photos…" status; results are cached per card. On failure show a friendly message and allow retry on next expand.
+   - PRIMARY source (no API key): Wikimedia Commons search API (action=query, generator=search, gsrnamespace=6, origin=*, prop=imageinfo with iiurlwidth=480), querying "<name> <city>" then falling back to "<name> Vietnam"; filter to jpeg/png/webp/gif, keep relevance order, take 5.
+   - OPTIONAL Google source: two constants at the top of the script, GOOGLE_API_KEY and GOOGLE_CX (default empty), with comments explaining how to get them (Google Custom Search JSON API + Programmable Search Engine, free tier 100 searches/day, key is exposed in the file so don't share publicly). If both are set, fetch Google's top 5 image results (searchType=image), using each result's full-size link with the Google-hosted thumbnailLink as onerror fallback. If the Google call fails or quota is exhausted, silently fall back to Wikimedia.
+   - Below the photo strip, an always-present link "See more on Google Images →" opening https://www.google.com/search?tbm=isch&q=<URL-encoded name + city + Vietnam> in a new tab. This link lives ONLY inside the expandable section and must not trigger expand/collapse when clicked.
+
+## Export feature
+9. An "Export" button pinned to the top-right, always visible (fixed, high z-index), with a count badge showing how many cards are selected (hidden at zero).
+10. Clicking Export downloads a CSV (Blob + temporary <a download>, UTF-8 BOM) containing ONLY selected cards, in itinerary order, with header: Date,Day,City,Time Block,Place/Activity,Description. Properly quote/escape fields. If nothing is selected, show a toast: "No places selected yet — tap a checkbox to add it to your plan." Show a success toast after export.
+
+## Design requirements
+- Mobile-first (~380px), touch targets ≥44px, readable sizes.
+- Vietnam-inspired identity with per-city theming: Hanoi pages use lacquer red accents, Sapa pages use misty green accents, on a warm paper background, serif display type for dates. Selected vs unselected cards instantly distinguishable.
+- Accessibility: keyboard-focus styles, aria-expanded on cards, aria-labels on checkboxes and Export, reduced-motion respected.
+- No localStorage/sessionStorage. Everything in ONE .html file that opens directly in a mobile browser (photos and Google links need internet; the rest works offline).
