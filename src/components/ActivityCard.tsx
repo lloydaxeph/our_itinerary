@@ -96,11 +96,12 @@ export function ActivityCard({ activity, city, selected, onToggleSelected }: Act
       </div>
 
       <div
-        className="expandbar basis-full flex items-center justify-center min-h-[26px] mt-1.5 rounded-b-xl"
+        className="expandbar basis-full flex items-center justify-center gap-1.5 min-h-[26px] mt-1.5 rounded-b-xl"
         style={{ margin: "6px -12px -12px -14px" }}
         aria-hidden="true"
         onClick={toggleExpand}
       >
+        <span className="text-[11px] font-semibold">Images</span>
         <span className="arrow text-[8px]">▼</span>
       </div>
     </div>
