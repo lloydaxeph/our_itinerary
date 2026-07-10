@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 interface TopBarProps {
   username: string;
   count: number;
@@ -7,11 +9,27 @@ interface TopBarProps {
 }
 
 export function TopBar({ username, count, submitting, onSubmit, onLogout }: TopBarProps) {
+  const barRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = barRef.current;
+    if (!el) return;
+    // iOS Safari can mount a fixed element with a stale safe-area/viewport
+    // snapshot right after a client-side login transition; forcing a reflow
+    // on the next frame makes it recompute against the settled viewport.
+    requestAnimationFrame(() => {
+      el.style.display = "none";
+      void el.offsetHeight;
+      el.style.display = "";
+    });
+  }, []);
+
   return (
     <div
+      ref={barRef}
       className="fixed inset-x-0 top-0 z-50 flex items-center justify-between pointer-events-none"
       style={{
-        padding: "calc(env(safe-area-inset-top, 0px) + 10px) 14px 10px 16px",
+        padding: "calc(var(--safe-top) + 10px) 14px 10px 16px",
         background:
           "linear-gradient(to bottom, rgba(247,243,234,.96) 55%, rgba(247,243,234,0))",
       }}

@@ -261,7 +261,7 @@ export const DAYS: Day[] = [
     ],
   },
   {
-    date: "2026-11-09", nice: "Sun, Nov 9", city: "Hanoi", route: ["HANOI", "WEST LAKE"],
+    date: "2026-11-09", nice: "Sun, Nov 9", city: "Hanoi", route: ["HANOI", "HANOI"],
     note: "Weekend bonus: streets around Hoan Kiem become <b>pedestrian-only</b> — great evening atmosphere.",
     blocks: [
       {
@@ -318,7 +318,7 @@ export const DAYS: Day[] = [
     ],
   },
   {
-    date: "2026-11-10", nice: "Mon, Nov 10", city: "Hanoi", route: ["HANOI", "Home"],
+    date: "2026-11-10", nice: "Mon, Nov 10", city: "Hanoi", route: ["HANOI", "SINGAPORE"],
     note: "Departure day. Keep the morning close to the hotel; airport is roughly 45 min away — leave with plenty of buffer before your flight. Airport lines could take <b>1-3hrs</b>.",
     blocks: [
       {

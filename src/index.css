@@ -8,6 +8,9 @@
   #root {
     height: 100%;
   }
+  html {
+    --safe-top: env(safe-area-inset-top, 0px);
+  }
   body {
     background: theme("colors.paper");
     color: theme("colors.ink.DEFAULT");
@@ -43,7 +46,7 @@
     scroll-snap-stop: always;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: calc(env(safe-area-inset-top, 0px) + 68px) 16px 96px;
+    padding: calc(var(--safe-top) + 68px) 16px 96px;
   }
   .page-hanoi {
     --accent: theme("colors.han.DEFAULT");
