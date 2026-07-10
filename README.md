@@ -118,10 +118,15 @@ npx wrangler d1 execute our-itinerary-db --remote --command "DELETE FROM votes W
 ```
 
 **Full reset — wipe all votes, usernames, and admin sessions** (irreversible; confirm with
-whoever owns the trip before running this):
+whoever owns the trip before running this). Run as separate commands — D1's `--command` doesn't
+reliably execute multiple semicolon-chained statements in one call — and clear the `votes`
+autoincrement sequence so new votes don't resume from the old `vote_id` count:
 
 ```
-npx wrangler d1 execute our-itinerary-db --remote --command "DELETE FROM votes; DELETE FROM users; DELETE FROM admin_sessions;"
+npx wrangler d1 execute our-itinerary-db --remote --command "DELETE FROM votes;"
+npx wrangler d1 execute our-itinerary-db --remote --command "DELETE FROM users;"
+npx wrangler d1 execute our-itinerary-db --remote --command "DELETE FROM admin_sessions;"
+npx wrangler d1 execute our-itinerary-db --remote --command "DELETE FROM sqlite_sequence WHERE name='votes';"
 ```
 
 **Emergency recovery** — D1 keeps point-in-time snapshots for the last 30 days ("Time Travel"),

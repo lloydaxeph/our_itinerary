@@ -3,6 +3,9 @@ export type City = "Hanoi" | "Sapa";
 export interface Activity {
   n: string; // name
   d: string; // description
+  im?: string[]; // image urls
+  loc?: string; // Google Maps query or place link
+  thumb?: string; // thumbnail image url
 }
 
 export interface TimeBlock {
@@ -19,11 +22,6 @@ export interface Day {
   route: [string, string];
   note: string;
   blocks: TimeBlock[];
-}
-
-export interface ImageResult {
-  src: string;
-  fallback?: string;
 }
 
 /** `${dayIndex}-${blockIndex}-${itemIndex}`, also used as the vote item_id */

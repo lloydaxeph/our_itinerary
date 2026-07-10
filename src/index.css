@@ -125,6 +125,9 @@
   .activity-card.selected .activity-desc {
     color: rgba(251, 247, 238, 0.82);
   }
+  .activity-card.selected .activity-thumb {
+    background: rgba(255, 255, 255, 0.14);
+  }
   .activity-card .expandbar {
     background: var(--tint);
     border-top: 1px dashed theme("colors.line");
@@ -225,6 +228,15 @@
     width: 20px;
     border-radius: 999px;
     background: theme("colors.ink.DEFAULT");
+  }
+
+  /* ---------- Pager nav buttons ---------- */
+  .pager-nav {
+    background: rgba(0, 0, 0, 0.06);
+    color: theme("colors.ink.DEFAULT");
+  }
+  .pager-nav:not(:disabled):hover {
+    background: rgba(0, 0, 0, 0.1);
   }
 
   /* ---------- Toast ---------- */

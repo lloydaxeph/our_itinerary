@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { Book } from "./components/Book";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Book, type BookHandle } from "./components/Book";
 import { ConfirmDialog } from "./components/ConfirmDialog";
 import { Pager } from "./components/Pager";
 import { RegisterGate } from "./components/RegisterGate";
@@ -10,7 +10,7 @@ import { DAYS } from "./data/days";
 import { useSelection } from "./hooks/useSelection";
 import { useToast } from "./hooks/useToast";
 import { fetchMyVotes, submitVotes } from "./lib/api";
-import { getStoredUsername, setStoredUsername } from "./lib/session";
+import { clearStoredUsername, getStoredUsername, setStoredUsername } from "./lib/session";
 import type { VoteItem } from "./types";
 
 // Flat, itinerary-ordered lookup of item_id -> item_name.
@@ -27,6 +27,7 @@ export default function App() {
   const { selected, toggle, isSelected, count, setAll } = useSelection();
   const { message, show } = useToast();
   const [current, setCurrent] = useState(0);
+  const bookRef = useRef<BookHandle>(null);
   const [username, setUsername] = useState<string | null>(() => getStoredUsername());
   const [submitting, setSubmitting] = useState(false);
   const [hasSubmittedBefore, setHasSubmittedBefore] = useState(false);
@@ -64,6 +65,14 @@ export default function App() {
     }
   }, [username, selected, show]);
 
+  const handleLogout = useCallback(() => {
+    clearStoredUsername();
+    setUsername(null);
+    setAll([]);
+    setHasSubmittedBefore(false);
+    setCurrent(0);
+  }, [setAll]);
+
   const handleSubmit = useCallback(() => {
     if (selected.size === 0) {
       show("No places selected yet — tap a checkbox to add it to your plan.");
@@ -89,9 +98,21 @@ export default function App() {
 
   return (
     <>
-      <TopBar username={username} count={count} submitting={submitting} onSubmit={handleSubmit} />
-      <Book days={DAYS} isSelected={isSelected} onToggle={toggle} onPageChange={setCurrent} />
-      <Pager days={DAYS} current={current} />
+      <TopBar
+        username={username}
+        count={count}
+        submitting={submitting}
+        onSubmit={handleSubmit}
+        onLogout={handleLogout}
+      />
+      <Book
+        ref={bookRef}
+        days={DAYS}
+        isSelected={isSelected}
+        onToggle={toggle}
+        onPageChange={setCurrent}
+      />
+      <Pager days={DAYS} current={current} onGoTo={(i) => bookRef.current?.goTo(i)} />
       <Watermark />
       <Toast message={message} />
       {confirmingResubmit && (

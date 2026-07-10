@@ -3,9 +3,10 @@ interface TopBarProps {
   count: number;
   submitting: boolean;
   onSubmit: () => void;
+  onLogout: () => void;
 }
 
-export function TopBar({ username, count, submitting, onSubmit }: TopBarProps) {
+export function TopBar({ username, count, submitting, onSubmit, onLogout }: TopBarProps) {
   return (
     <div
       className="fixed inset-x-0 top-0 z-50 flex items-center justify-between pointer-events-none"
@@ -16,7 +17,14 @@ export function TopBar({ username, count, submitting, onSubmit }: TopBarProps) {
       }}
     >
       <div className="pointer-events-auto">
-        <div className="text-[11px] tracking-[.14em] uppercase text-ink-soft">{username}</div>
+        <button
+          type="button"
+          onClick={onLogout}
+          aria-label="Switch user / log out"
+          className="focus-ring text-[11px] tracking-[.14em] uppercase text-ink-soft underline decoration-dotted underline-offset-2 active:opacity-70"
+        >
+          {username}
+        </button>
         <div className="text-[15px] font-bold font-serif">Vietnam 2026</div>
       </div>
       <div className="pointer-events-auto flex items-center gap-2">
