@@ -46,6 +46,9 @@ export function Pager({ days, current, onGoTo }: PagerProps) {
       <div className="text-[11px] tracking-[.14em] uppercase text-ink-soft">
         Day {current + 1} of {days.length} · {days[current]?.city}
       </div>
+      <div className="w-full px-3 text-right text-[9px] text-ink-soft/60">
+        © 2026 Axe Technologies. All rights reserved.
+      </div>
     </div>
   );
 }

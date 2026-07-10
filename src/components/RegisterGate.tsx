@@ -30,18 +30,29 @@ export function RegisterGate({ onRegistered }: RegisterGateProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-paper px-6">
+    <div className="fixed inset-0 z-[100] grid grid-rows-[1fr_auto_1fr] items-center justify-items-center bg-paper px-6">
+      <div className="self-center text-right">
+        <div
+          className="font-extrabold font-serif tracking-tight text-ink leading-none"
+          style={{ fontSize: "3.5rem" }}
+        >
+          <span className="text-han">Our</span>Itinerary
+        </div>
+        <div className="text-[11px] sm:text-xs text-ink-soft mt-0.5">
+          By: Axe Technologies
+        </div>
+      </div>
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-[340px] rounded-card bg-white border border-line shadow-card p-6 flex flex-col gap-4"
       >
         <div>
           <div className="text-[11px] tracking-[.14em] uppercase text-ink-soft">
-            Vietnam · Nov 4–10
+            You are invited!
           </div>
-          <h1 className="text-xl font-bold font-serif">Who's picking?</h1>
+          <h1 className="text-xl font-bold font-serif">Vietnam · Nov 4–10, 2026</h1>
           <p className="text-[13px] text-ink-soft mt-1">
-            Pick a username so we know whose votes are whose. No password needed.
+            Please enter a username, then browse and vote on activities to help plan the trip.
           </p>
         </div>
         <input

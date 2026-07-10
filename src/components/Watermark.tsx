@@ -7,7 +7,7 @@ export function Watermark() {
         bottom: "calc(env(safe-area-inset-bottom, 0px) + 6px)",
       }}
     >
-      © 2026 Axe Technologies
+      © 2026 Axe Technologies. All rights reserved.
     </div>
   );
 }

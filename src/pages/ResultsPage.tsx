@@ -16,6 +16,12 @@ export default function ResultsPage() {
   return (
     <div className="min-h-dvh bg-paper text-ink px-4 py-8 flex flex-col items-center">
       <div className="w-full max-w-[520px]">
+        <a
+          href="/"
+          className="focus-ring inline-flex items-center gap-1 text-[13px] font-semibold text-ink-soft mb-3"
+        >
+          ‹ Back
+        </a>
         <div className="text-[11px] tracking-[.14em] uppercase text-ink-soft">
           Vietnam · Nov 4–10
         </div>
