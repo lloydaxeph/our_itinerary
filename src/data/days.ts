@@ -2,20 +2,20 @@ import type { Day } from "../types";
 
 export const DAYS: Day[] = [
   {
-    date: "2026-11-04", nice: "Tue, Nov 4", city: "Hanoi", route: ["Home", "HANOI"],
-    note: 'Arrive around lunchtime. Tonight: <b>sleeper train/bus to Sapa, dep. late evening</b>. Keep bags packed light for the overnight ride.',
+    date: "2026-11-04", nice: "Tue, Nov 4", city: "Hanoi", route: ["SINGAPORE", "HANOI"],
+    note: 'Keep your bags packed light for the overnight journey. <b>Secure all valuables and essential travel documents</b>, including your passport, wallet, phone, medications, and IDs. It is best to convert money before departure.',
     blocks: [
       {
-        time: "12PM–4PM", label: "In transit",
+        time: "12PM–4PM", label: "Singapore Departure",
         transit: "✈️ Flight from Singapore to Hanoi — on the way. Rest up, today runs late.", items: [],
       },
       {
-        time: "4PM–6PM", label: "Arrival",
-        transit: "🛬 Land at Noi Bai Airport, immigration & SIM card, head into the city. Could take a while — the airport gets crowded around this time.",
+        time: "4PM–6PM", label: "Hanoi Arrival",
+        transit: "🛬 Land at Noi Bai Airport. This airport is known for its long waiting times during both arrivals and departures so its best to bring your patience.",
         items: [
-          { n: "Airport Bus 86 to Old Quarter", d: "Cheap, easy express bus straight to Hoan Kiem — a scenic first look at Hanoi.",loc: "Noi Bai International Airport", thumb: "/images/airport_bus_86_to_old_quarter.png" },
+          { n: "Airport Bus 86 to Old Quarter", d: "Cheap, easy express bus straight to Hoan Kiem — a scenic first look at Hanoi.", thumb: "/images/airport_bus_86_to_old_quarter.png" },
           { n: "Grab car to hotel", d: "Fastest door-to-door option; book in the app, no haggling needed.", thumb: "/images/grab_car_to_hotel.jpg" },
-          { n: "Check in to hotel", d: "Drop your bags and settle in before heading out for dinner.", thumb: "/images/check_in_to_hotel.png" },
+          { n: "Quick Check-in to hotel", d: "Drop your bags and settle in before heading out for dinner.", thumb: "/images/check_in_to_hotel.png" },
         ],
       },
       {
@@ -31,15 +31,15 @@ export const DAYS: Day[] = [
       {
         time: "11PM–6AM (next day)", label: "Overnight to Sapa",
         items: [
-          { n: "Sleeper Train to Sapa", d: "Overnight train to Lao Cai, then shuttle up the mountain — cabin bunks, rocks you to sleep.", loc: "Hanoi Railway Station", thumb: "/images/sleeper_train_to_sapa.jpg" },
-          { n: "Sleeper Bus to Sapa", d: "Direct overnight bus straight to Sapa town — flat reclining pods, no transfer needed.", loc: "My Dinh Bus Station, Hanoi", thumb: "/images/sleeper_bus_to_sapa.jpg" },
+          { n: "Sleeper Train to Sapa", d: "Overnight train to Lao Cai, then shuttle up the mountain — cabin bunks, rocks you to sleep. Could be noisy though.", loc: "Hanoi Railway Station", thumb: "/images/sleeper_train_to_sapa.jpg" },
+          { n: "Sleeper Bus to Sapa", d: "Direct overnight bus straight to Sapa town — flat reclining pods, no transfer needed. Space is limited.", loc: "My Dinh Bus Station, Hanoi", thumb: "/images/sleeper_bus_to_sapa.jpg" },
         ],
       },
     ],
   },
   {
-    date: "2026-11-05", nice: "Wed, Nov 5", city: "Sapa", route: ["LAO CAI", "SAPA"],
-    note: "Arrive early morning, then a winding shuttle up to Sapa. November is cool (10–18°C) and often misty — <b>bring layers</b>.",
+    date: "2026-11-05", nice: "Wed, Nov 5", city: "Sapa", route: ["HANOI", "SAPA"],
+    note: "Arrive early morning, then a winding shuttle up to Sapa. November is cool (10–18°C) and often misty — <b>bring jackets</b>.",
     blocks: [
       {
         time: "6AM–8AM", label: "Arrival morning",
@@ -95,7 +95,7 @@ export const DAYS: Day[] = [
   },
   {
     date: "2026-11-06", nice: "Thu, Nov 6", city: "Sapa", route: ["SAPA", "FANSIPAN"],
-    note: "Big day. Go up <b>Fansipan early</b> — mornings give the best chance above the clouds before afternoon fog.",
+    note: "Leg day. Go up <b>Fansipan early</b> — mornings give the best chance above the clouds before afternoon fog.",
     blocks: [
       {
         time: "6AM–8AM", label: "Misty sunrise breakfast",
@@ -147,7 +147,7 @@ export const DAYS: Day[] = [
   },
   {
     date: "2026-11-07", nice: "Fri, Nov 7", city: "Sapa", route: ["SAPA", "LAO CAI"],
-    note: "Last Sapa day. Tonight: <b>sleeper train or bus back to Hanoi</b> — shuttle down in the evening.",
+    note: "Last Sapa day. Just relax and enjoy the fresh air.",
     blocks: [
       {
         time: "6AM–8AM", label: "One last sunrise",
@@ -166,6 +166,7 @@ export const DAYS: Day[] = [
       },
       {
         time: "11AM–1PM", label: "Lunch",
+        transit: "Hotel Check-out.",
         items: [
           { n: "Early salmon hotpot dinner spot for lunch", d: "Eat well in Sapa — train snacks are slim, so make lunch count.", loc: "Salmon hotpot restaurant, Sapa", thumb: "/images/early_salmon_hotpot_dinner_spot_for_lunch.jpg" },
           { n: "Noodle stall near the market", d: "Quick, filling bowl before an afternoon of shopping.", loc: "Sapa Market", thumb: "/images/noodle_stall_near_the_market.jpg" },
@@ -203,11 +204,11 @@ export const DAYS: Day[] = [
   },
   {
     date: "2026-11-08", nice: "Sat, Nov 8", city: "Hanoi", route: ["LAO CAI", "HANOI"],
-    note: "Train or bus arrives Hanoi early morning. Hanoi is at its best at dawn — lean into the early start, nap later if needed.",
+    note: "Train or bus arrives Hanoi early morning. Hanoi is at its best at dawn.",
     blocks: [
       {
         time: "6AM–8AM", label: "Hanoi at dawn",
-        transit: "🚆 Arrive back in Hanoi — early hotel check-in, drop bags before heading out.",
+        transit: "🚆 Arrive back in Hanoi — early hotel check-in, drop bags before heading out or settle down.",
         items: [
           { n: "Muse Hotel", d: "Check in back in Hanoi after the overnight ride from Sapa.", loc: "Muse Hotel Hanoi", thumb: "/images/muse_hotel.jpg" },
           { n: "Tai chi at Hoan Kiem Lake", d: "Join locals exercising around the lake at sunrise.", loc: "Hoan Kiem Lake, Hanoi", thumb: "/images/tai_chi_at_hoan_kiem_lake.jpg" },
@@ -318,7 +319,7 @@ export const DAYS: Day[] = [
   },
   {
     date: "2026-11-10", nice: "Mon, Nov 10", city: "Hanoi", route: ["HANOI", "Home"],
-    note: "Departure day. Keep the morning close to the hotel; airport is roughly 45 min away — leave with plenty of buffer before your flight.",
+    note: "Departure day. Keep the morning close to the hotel; airport is roughly 45 min away — leave with plenty of buffer before your flight. Airport lines could take <b>1-3hrs</b>.",
     blocks: [
       {
         time: "6AM–8AM", label: "Slow last breakfast",
@@ -347,6 +348,11 @@ export const DAYS: Day[] = [
         items: [
           { n: "Airport pho or banh mi", d: "Decent last-chance Vietnamese food after security.", loc: "Noi Bai International Airport", thumb: "/images/airport_pho_or_banh_mi.jpg" },
         ],
+      },
+      {
+        time: "3PM-6PM", label: "Arrive at Singapore",
+        transit: "🛬 Land at Changi Airport.",
+        items: [],
       },
     ],
   },
