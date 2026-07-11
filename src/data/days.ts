@@ -15,7 +15,6 @@ export const DAYS: Day[] = [
         items: [
           { n: "Airport Bus 86 to Old Quarter", d: "Cheap, easy express bus straight to Hoan Kiem — a scenic first look at Hanoi.", thumb: "/images/airport_bus_86_to_old_quarter.png" },
           { n: "Grab car to hotel", d: "Fastest door-to-door option; book in the app, no haggling needed.", thumb: "/images/grab_car_to_hotel.jpg" },
-          { n: "Quick Check-in to hotel", d: "Drop your bags and settle in before heading out for dinner.", thumb: "/images/check_in_to_hotel.png" },
         ],
       },
       {
@@ -196,8 +195,8 @@ export const DAYS: Day[] = [
       {
         time: "11PM–6AM (next day)", label: "Overnight to Hanoi",
         items: [
-          { n: "Sleeper Train to Hanoi", d: "Overnight train back down from Lao Cai — cabin bunks, arrive Hanoi at dawn.", loc: "Lao Cai Railway Station", thumb: "/images/sleeper_train_to_hanoi.jpg" },
-          { n: "Sleeper Bus to Hanoi", d: "Direct overnight bus straight back to Hanoi — flat reclining pods.", loc: "Lao Cai Bus Station", thumb: "/images/sleeper_bus_to_hanoi.jpg" },
+          { n: "Sleeper Train to Hanoi", d: "Overnight train back down from Lao Cai — cabin bunks, arrive Hanoi at dawn.", loc: "Lao Cai Railway Station", thumb: "/images/sleeper_train_to_sapa.jpg" },
+          { n: "Sleeper Bus to Hanoi", d: "Direct overnight bus straight back to Hanoi — flat reclining pods.", loc: "Lao Cai Bus Station", thumb: "/images/sleeper_bus_to_sapa.jpg" },
         ],
       },
     ],
@@ -293,7 +292,7 @@ export const DAYS: Day[] = [
           { n: "Bat Trang ceramic village", d: "Half-day pottery village trip — throw your own bowl.", loc: "Bat Trang Ceramic Village, Hanoi", thumb: "/images/bat_trang_ceramic_village.jpg" },
           { n: "St. Joseph's Cathedral quarter", d: "Neo-gothic cathedral, boutiques and lemon tea corners.", loc: "St. Joseph's Cathedral, Hanoi", thumb: "/images/st_joseph_s_cathedral_quarter.jpg" },
           { n: "Note Coffee or hidden cafes", d: "Hanoi's cafe culture — sticky notes, courtyards, balconies.", loc: "Note Coffee, Hanoi", thumb: "/images/note_coffee_or_hidden_cafes.jpg" },
-          { n: "Grand Mega World", d: "Large entertainment and shopping complex — a fun half-day detour.", loc: "Grand Mega World, Hanoi", thumb: "/images/grand_mega_world.jpg" },
+          { n: "Grand Mega World", d: "Large entertainment and shopping complex — a fun half-day detour.", loc: "Grand Mega World, Hanoi", thumb: "/images/grand_mega.jpg" },
           { n: "Bai Da Song Hong Rainbow Slide", d: "Colorful slide art along the Red River rocks — playful photo stop.", loc: "Bai Da Song Hong, Hanoi", thumb: "/images/bai_da_song_hong_rainbow_slide.jpg" },
         ],
       },
