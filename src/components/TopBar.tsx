@@ -40,7 +40,7 @@ export function TopBar({ username, count, submitting, onSubmit, onLogout }: TopB
             type="button"
             onClick={onLogout}
             aria-label="Switch user / log out"
-            className="focus-ring text-[11px] leading-none text-ink-soft active:opacity-70"
+            className="focus-ring flex items-center justify-center w-7 h-7 -m-1 text-[15px] font-bold leading-none text-ink-soft active:opacity-70"
           >
             ✕
           </button>
