@@ -50,7 +50,7 @@ export function RegisterGate({ onRegistered }: RegisterGateProps) {
           <div className="text-[11px] tracking-[.14em] uppercase text-ink-soft">
             You are invited!
           </div>
-          <h1 className="text-xl font-bold font-serif">Vietnam · Nov 4–10, 2026</h1>
+          <h1 className="text-xl font-bold font-serif">Vietnam · Nov 5–11, 2026</h1>
           <p className="text-[13px] text-ink-soft mt-1">
             Please enter a username, then browse and vote on activities to help plan the trip.
           </p>

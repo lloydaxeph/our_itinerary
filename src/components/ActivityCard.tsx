@@ -60,17 +60,30 @@ export function ActivityCard({ activity, city, selected, onToggleSelected }: Act
           <span>{activity.n}</span>
         </div>
         <div className="activity-desc text-[12.5px] leading-snug text-ink-soft">{activity.d}</div>
-        {googleMapsUrl && (
-          <a
-            href={googleMapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="gallery-more focus-ring self-start inline-block text-[12px] font-bold pb-px"
-            onClick={(e) => e.stopPropagation()}
-          >
-            Open in maps 📍
-          </a>
-        )}
+        <div className="flex items-center gap-2.5 flex-wrap">
+          {googleMapsUrl && (
+            <a
+              href={googleMapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="gallery-more focus-ring self-start inline-block text-[12px] font-bold pb-px"
+              onClick={(e) => e.stopPropagation()}
+            >
+              Open in maps 📍
+            </a>
+          )}
+          {activity.website && (
+            <a
+              href={activity.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="gallery-more focus-ring self-start inline-block text-[12px] font-bold pb-px"
+              onClick={(e) => e.stopPropagation()}
+            >
+              Visit Page 🌐
+            </a>
+          )}
+        </div>
       </div>
 
       <label

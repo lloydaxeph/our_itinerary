@@ -6,6 +6,7 @@ export interface Activity {
   im?: string[]; // image urls
   loc?: string; // Google Maps query or place link
   thumb?: string; // thumbnail image url
+  website?: string; // official website url
 }
 
 export interface TimeBlock {

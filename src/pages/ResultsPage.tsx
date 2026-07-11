@@ -23,7 +23,7 @@ export default function ResultsPage() {
           ‹ Back
         </a>
         <div className="text-[11px] tracking-[.14em] uppercase text-ink-soft">
-          Vietnam · Nov 4–10
+          Vietnam · Nov 5–11
         </div>
         <h1 className="text-2xl font-bold font-serif mb-5">Vote Results</h1>
 

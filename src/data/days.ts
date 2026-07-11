@@ -2,7 +2,7 @@ import type { Day } from "../types";
 
 export const DAYS: Day[] = [
   {
-    date: "2026-11-04", nice: "Tue, Nov 4", city: "Hanoi", route: ["SINGAPORE", "HANOI"],
+    date: "2026-11-05", nice: "Tue, Nov 5", city: "Hanoi", route: ["SINGAPORE", "HANOI"],
     note: 'Keep your bags packed light for the overnight journey. <b>Secure all valuables and essential travel documents</b>, including your passport, wallet, phone, medications, and IDs. It is best to convert money before departure.',
     blocks: [
       {
@@ -14,7 +14,7 @@ export const DAYS: Day[] = [
         transit: "🛬 Land at Noi Bai Airport. This airport is known for its long waiting times during both arrivals and departures so its best to bring your patience.",
         items: [
           { n: "Airport Bus 86 to Old Quarter", d: "Cheap, easy express bus straight to Hoan Kiem — a scenic first look at Hanoi.", thumb: "/images/airport_bus_86_to_old_quarter.png" },
-          { n: "Grab car to hotel", d: "Fastest door-to-door option; book in the app, no haggling needed.", thumb: "/images/grab_car_to_hotel.jpg" },
+          { n: "Grab car to Old Quarter", d: "Fastest door-to-door option; book in the app, no haggling needed.", thumb: "/images/grab_car_to_hotel.jpg" },
         ],
       },
       {
@@ -22,7 +22,7 @@ export const DAYS: Day[] = [
         items: [
           { n: "Pho Thin Lo Duc", d: "Michelin Selected ⭐. Legendary stir-fried-beef pho — the perfect first meal in Vietnam.", loc: "Pho Thin Lo Duc, Hanoi", thumb: "/images/pho_thin_lo_duc.jpg" },
           { n: "Bun Cha Huong Lien", d: 'Michelin Selected ⭐. Smoky grilled-pork bun cha — the "Obama combo" spot.', loc: "Bun Cha Huong Lien, Hanoi", thumb: "/images/bun_cha_huong_lien.jpg" },
-          { n: "Tuyết Bún Chả 34", d: "Grilled pork and noodles done exceptionally well.", loc: "Tuyết Bún Chả 34, Hanoi",thumb:"/images/tuyet_bun_cha_34.jpg" },
+          { n: "Tuyết Bún Chả 34", d: "Grilled pork and noodles done exceptionally well.", loc: "Tuyết Bún Chả 34, Hanoi", thumb: "/images/tuyet_bun_cha_34.jpg" },
           { n: "Cha ca La Vong", d: "Turmeric fish sizzled with dill at your table — a Hanoi original.", loc: "Cha Ca La Vong, Hanoi", thumb: "/images/cha_ca_la_vong.jpg" },
           { n: "Ta Hien Beer Street stalls", d: "Fresh bia hoi and grilled skewers on low plastic stools.", loc: "Ta Hien Beer Street, Hanoi", thumb: "/images/ta_hien_beer_street_stalls.jpg" },
         ],
@@ -37,23 +37,33 @@ export const DAYS: Day[] = [
     ],
   },
   {
-    date: "2026-11-05", nice: "Wed, Nov 5", city: "Sapa", route: ["HANOI", "SAPA"],
+    date: "2026-11-06", nice: "Wed, Nov 6", city: "Sapa", route: ["HANOI", "SAPA"],
     note: "Arrive early morning, then a winding shuttle up to Sapa. November is cool (10–18°C) and often misty — <b>bring jackets</b>.",
     blocks: [
       {
         time: "6AM–8AM", label: "Arrival morning",
         transit: "🚆 Arrive Sapa (Lao Cai) — early hotel check-in, drop bags before heading out.",
         items: [
-          { n: "Dai Nam Hotel Sapa", d: "Well-located Sapa town stay — ask for an early check-in after the overnight ride.", loc: "Dai Nam Hotel Sapa", thumb: "/images/dai_nam_hotel_sapa.jpg" },
-          { n: "Sapa Sun Plaza", d: "Alternative Sapa town hotel option, close to restaurants and the main square.", loc: "Sapa Sun Plaza", thumb: "/images/sapa_sun_plaza.jpg" },
-          { n: "La Do Homestay Sapa", d: "Cozy mountain homestay with stunning Muong Hoa Valley and Fansipan monorail views, near the cable car station.", loc: "La Do Homestay Sapa", thumb: "/images/la_do_homestay_sapa.jpg" },
-          { n: "Hot pho breakfast in Sapa town", d: "Steaming bowl to warm up after the sleeper.", loc: "Sapa town center", thumb: "/images/hot_pho_breakfast_in_sapa_town.jpg" },
-          { n: "Banh mi & hot soy milk breakfast", d: "Quick street breakfast if you're eager to get moving.", loc: "Sapa town center", thumb: "/images/banh_mi_hot_soy_milk_breakfast.jpg" },
+          { n: "Dai Nam Hotel Sapa", d: "Well-located Sapa town stay — ask for an early check-in after the overnight ride.", loc: "Dai Nam Hotel Sapa", thumb: "/images/dai_nam_hotel_sapa.jpg", website: "https://www.booking.com/hotel/vn/dai-nam-47-pho-fansipan-by-bay-luxury.html"},
+          { n: "La Do Homestay Sapa", d: "Cozy mountain homestay with stunning Muong Hoa Valley and Fansipan monorail views, near the cable car station.", loc: "La Do Homestay Sapa", thumb: "/images/la_do_homestay_sapa.jpg", website: "https://www.booking.com/hotel/vn/la-do-2-homestay-amp-coffee.html"},
+          { n: "Cloud Chaser Hotel", d: "Modern Sapa hotel with panoramic mountain-view rooms, a short walk from the town center.", loc: "Cloud Chaser Hotel, Sapa", thumb: "/images/cloud_chaser_hotel.jpg", website: "https://www.booking.com/hotel/vn/sapa-emerald.html" },
+          { n: "Eden Boutique Hotel & Spa", d: "Boutique stay with a spa and valley views, a relaxing base after the overnight ride.", loc: "Eden Boutique Hotel & Spa, Sapa", thumb: "/images/eden_boutique_hotel_and_spa.jpg", website: "https://www.booking.com/hotel/vn/eden-boutique-sapa.html" },
+          { n: "Green Villa Sapa", d: "Quiet villa-style hotel surrounded by greenery, close to Sapa's main attractions.", loc: "Green Villa Sapa", thumb: "/images/green_villa_sapa.jpg", website: "https://www.booking.com/hotel/vn/alpha-villa.html" },
+          { n: "SaPa Retreat Condotel", d: "Spacious condotel-style rooms with kitchenettes, good for a longer mountain stay.", loc: "SaPa Retreat Condotel, Sapa", thumb: "/images/sapa_retreat_condotel.jpg", website: "https://www.booking.com/hotel/vn/sapa-retreat-sa-pa12.html" },
+          { n: "Sapa Relax Hotel & Spa", d: "Spa-focused hotel with mountain views, ideal for unwinding after the sleeper train.", loc: "Sapa Relax Hotel & Spa, Sapa", thumb: "/images/sapa_relax_hotel_and_spa.jpg", website: "https://www.booking.com/hotel/vn/sapa-relax-amp-spa.html" },
+          { n: "Sapa Yen Hotel", d: "Budget-friendly, centrally located hotel within easy reach of the town square.", loc: "Sapa Yen Hotel, Sapa", thumb: "/images/sapa_yen_hotel.jpg", website: "https://www.booking.com/hotel/vn/sapa-yen.html" },
+          { n: "Terravia Hotel Sapa Mountain View", d: "Contemporary hotel with sweeping mountain-view rooms overlooking the valley.", loc: "Terravia Hotel Sapa", thumb: "/images/terravia_hotel_sapa_moutain_view.jpg", website: "https://www.booking.com/hotel/vn/terravia.html" },
+          { n: "TIME Restaurant & Homestay", d: "Homestay with an on-site restaurant, a relaxed and homely option in town.", loc: "TIME Restaurant & Homestay, Sapa", thumb: "/images/time_restaurant_and_homestay.jpg", website: "https://www.booking.com/hotel/vn/time-restaurant-amp-homestay.html" },
+          { n: "My's Homestay", d: "Family-run Hmong homestay with a warm, personal welcome and home-cooked meals.", loc: "My's Homestay, Sapa", thumb: "/images/mys_homestay.jpg", website: "https://www.booking.com/hotel/vn/h-39-mong-family-homestay.en-gb.html" },
+          { n: "Mekhoo & Zizi Sapa Homestay", d: "Rustic homestay with mountain views, run by a friendly local family.", loc: "Mekhoo & Zizi Sapa Homestay", thumb: "/images/mekhoo_and_zizi_sapa_homestay.jpg", website: "https://www.booking.com/hotel/vn/mekhoo-amp-zizi-sapa-homestay.en-gb.html" },
         ],
       },
       {
         time: "8AM–11AM", label: "Settle into Sapa",
         items: [
+          { n: "Sapa Sun Plaza", d: "Alternative Sapa town hotel option, close to restaurants and the main square.", loc: "Sapa Sun Plaza", thumb: "/images/sapa_sun_plaza.jpg" },
+          { n: "Hot pho breakfast in Sapa town", d: "Steaming bowl to warm up after the sleeper.", loc: "Sapa town center", thumb: "/images/hot_pho_breakfast_in_sapa_town.jpg" },
+          { n: "Banh mi & hot soy milk breakfast", d: "Quick street breakfast if you're eager to get moving.", loc: "Sapa town center", thumb: "/images/banh_mi_hot_soy_milk_breakfast.jpg" },
           { n: "Sapa Stone Church & main square", d: "The 1895 granite church is the heart of town life.", loc: "Sapa Stone Church", thumb: "/images/sapa_stone_church_main_square.jpg" },
           { n: "Sapa Market", d: "Hmong and Dao traders, brocade textiles, mountain herbs.", loc: "Sapa Market", thumb: "/images/sapa_market.jpg" },
           { n: "Coffee with a valley view", d: "Fog rolling over Muong Hoa from a cliffside cafe terrace.", loc: "Muong Hoa Valley viewpoint cafe, Sapa", thumb: "/images/coffee_with_a_valley_view.jpg" },
@@ -93,7 +103,7 @@ export const DAYS: Day[] = [
     ],
   },
   {
-    date: "2026-11-06", nice: "Thu, Nov 6", city: "Sapa", route: ["SAPA", "FANSIPAN"],
+    date: "2026-11-07", nice: "Thu, Nov 7", city: "Sapa", route: ["SAPA", "FANSIPAN"],
     note: "Leg day. Go up <b>Fansipan early</b> — mornings give the best chance above the clouds before afternoon fog.",
     blocks: [
       {
@@ -145,7 +155,7 @@ export const DAYS: Day[] = [
     ],
   },
   {
-    date: "2026-11-07", nice: "Fri, Nov 7", city: "Sapa", route: ["SAPA", "LAO CAI"],
+    date: "2026-11-08", nice: "Fri, Nov 8", city: "Sapa", route: ["SAPA", "LAO CAI"],
     note: "Last Sapa day. Just relax and enjoy the fresh air.",
     blocks: [
       {
@@ -202,22 +212,28 @@ export const DAYS: Day[] = [
     ],
   },
   {
-    date: "2026-11-08", nice: "Sat, Nov 8", city: "Hanoi", route: ["LAO CAI", "HANOI"],
+    date: "2026-11-09", nice: "Sat, Nov 9", city: "Hanoi", route: ["LAO CAI", "HANOI"],
     note: "Train or bus arrives Hanoi early morning. Hanoi is at its best at dawn.",
     blocks: [
       {
         time: "6AM–8AM", label: "Hanoi at dawn",
         transit: "🚆 Arrive back in Hanoi — early hotel check-in, drop bags before heading out or settle down.",
         items: [
-          { n: "Muse Hotel", d: "Check in back in Hanoi after the overnight ride from Sapa.", loc: "Muse Hotel Hanoi", thumb: "/images/muse_hotel.jpg" },
-          { n: "Tai chi at Hoan Kiem Lake", d: "Join locals exercising around the lake at sunrise.", loc: "Hoan Kiem Lake, Hanoi", thumb: "/images/tai_chi_at_hoan_kiem_lake.jpg" },
-          { n: "Pho breakfast, dawn edition", d: "Pho tastes best at 6 AM on a tiny plastic stool.", loc: "Old Quarter, Hanoi", thumb: "/images/pho_breakfast_dawn_edition.jpg" },
-          { n: "Pho 10 Ly Quoc Su", d: "Michelin Selected ⭐. Rich broth and tender beef, one of Hanoi's most popular pho destinations.", loc: "Pho 10 Ly Quoc Su, Hanoi", thumb: "/images/pho_10_ly_quoc_su.jpg" },
+          { n: "Centraltique Downtown", d: "Bespoke French colonial house steps from Hoan Kiem Lake, blending heritage charm with modern comfort.", loc: "Centraltique Downtown, Hanoi", thumb: "/images/centraltique_downtown.jpg", website: "https://www.booking.com/hotel/vn/centraltique-bespoke-french-colonial-house-near-hoan-kiem-lake.html" },
+          { n: "The Little Hanoi Duplex", d: "Stylish duplex apartment in the Old Quarter with lake-view balconies, a homely upscale option.", loc: "The Little Hanoi Duplex, Hanoi", thumb: "/images/the_little_hanoi_duplex.jpg", website: "https://www.booking.com/hotel/vn/duplex-luxury-home-old-quater-street-view-hoan-kiem.html" },
+          { n: "Spring Home Ha Noi", d: "Warm, budget-friendly homestay tucked in the Old Quarter, close to lake and street food.", loc: "Spring Home Ha Noi", thumb: "/images/spring_home_ha_noi.jpg", website: "https://www.booking.com/hotel/vn/spring-home-ha-noi.html" },
+          { n: "Hanoi New Comb Hostel", d: "Clean, sociable hostel in the heart of the Old Quarter, great for meeting fellow travelers.", loc: "Hanoi New Comb Hostel", thumb: "/images/hanoi_new_comb_hostel.jpg", website: "https://www.booking.com/hotel/vn/the-comb-hanoi.html" },
+          { n: "Lotuz Hanoi Hostel", d: "Friendly hostel with an in-house travel desk, handy for booking the Ha Giang loop and onward trips.", loc: "Lotuz Hanoi Hostel", thumb: "/images/lotuz_hanoi_hostel.jpg", website: "https://www.booking.com/hotel/vn/lotuz-hanoi-hostel-ha-giang-loop-office.html" },
+          { n: "Hanoi High Five Hostel", d: "Lively backpacker hostel with a rooftop hangout spot, minutes from Old Quarter nightlife.", loc: "Hanoi High Five Hostel", thumb: "/images/hanoi_high_five_hostel.jpg", website: "https://www.booking.com/hotel/vn/hanoi-high-five-hostel-ha-noi.html" },
+          { n: "Cozy Backpackers Beer Street", d: "Budget stay right by Ta Hien Beer Street, ideal for travelers who want the action outside their door.", loc: "Cozy Backpackers Beer Street, Hanoi", thumb: "/images/cozy_backpackers_beerstreet.jpg", website: "https://www.booking.com/hotel/vn/cozy-backpackers-beerstreet-private-old-quarter.html" },
         ],
       },
       {
         time: "8AM–11AM", label: "Imperial Hanoi",
         items: [
+          { n: "Tai chi at Hoan Kiem Lake", d: "Join locals exercising around the lake at sunrise.", loc: "Hoan Kiem Lake, Hanoi", thumb: "/images/tai_chi_at_hoan_kiem_lake.jpg" },
+          { n: "Pho breakfast, dawn edition", d: "Pho tastes best at 6 AM on a tiny plastic stool.", loc: "Old Quarter, Hanoi", thumb: "/images/pho_breakfast_dawn_edition.jpg" },
+          { n: "Pho 10 Ly Quoc Su", d: "Michelin Selected ⭐. Rich broth and tender beef, one of Hanoi's most popular pho destinations.", loc: "Pho 10 Ly Quoc Su, Hanoi", thumb: "/images/pho_10_ly_quoc_su.jpg" },
           { n: "Temple of Literature", d: "Vietnam's first university (1070) — courtyards, stelae, bonsai.", loc: "Temple of Literature, Hanoi", thumb: "/images/temple_of_literature.jpg" },
           { n: "Ho Chi Minh Mausoleum complex", d: "Ba Dinh Square, the stilt house and One Pillar Pagoda.", loc: "Ho Chi Minh Mausoleum, Hanoi", thumb: "/images/ho_chi_minh_mausoleum_complex.jpg" },
           { n: "Imperial Citadel of Thang Long", d: "UNESCO site — a millennium of Vietnamese dynasties.", loc: "Imperial Citadel of Thang Long, Hanoi", thumb: "/images/imperial_citadel_of_thang_long.jpg" },
@@ -260,7 +276,7 @@ export const DAYS: Day[] = [
     ],
   },
   {
-    date: "2026-11-09", nice: "Sun, Nov 9", city: "Hanoi", route: ["HANOI", "HANOI"],
+    date: "2026-11-10", nice: "Sun, Nov 10", city: "Hanoi", route: ["HANOI", "HANOI"],
     note: "Weekend bonus: streets around Hoan Kiem become <b>pedestrian-only</b> — great evening atmosphere.",
     blocks: [
       {
@@ -317,7 +333,7 @@ export const DAYS: Day[] = [
     ],
   },
   {
-    date: "2026-11-10", nice: "Mon, Nov 10", city: "Hanoi", route: ["HANOI", "SINGAPORE"],
+    date: "2026-11-11", nice: "Mon, Nov 11", city: "Hanoi", route: ["HANOI", "SINGAPORE"],
     note: "Departure day. Keep the morning close to the hotel; airport is roughly 45 min away — leave with plenty of buffer before your flight. Airport lines could take <b>1-3hrs</b>.",
     blocks: [
       {
