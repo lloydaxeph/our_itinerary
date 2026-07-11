@@ -35,12 +35,13 @@ export function TopBar({ username, count, submitting, onSubmit, onLogout }: TopB
       }}
     >
       <div className="pointer-events-auto">
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5">
           <button
             type="button"
             onClick={onLogout}
             aria-label="Switch user / log out"
-            className="focus-ring flex items-center justify-center w-7 h-7 -m-1 text-[15px] font-bold leading-none text-ink-soft active:opacity-70"
+            className="focus-ring flex items-center justify-center w-7 h-7 -m-1 text-[15px] font-bold leading-none active:opacity-70"
+            style={{ color: "#a3564f" }}
           >
             ✕
           </button>
